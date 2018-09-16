@@ -64,7 +64,6 @@ class KegiatanController extends Controller
 
         $kegiatan = kegiatan::join('tipe_kegiatan', 'tipe_kegiatan.id', '=', 'kegiatan.id_tipe_kegiatan')
         ->where('kegiatan.id', $id)
-        ->select('kegiatan.nama_kegiatan', 'kegiatan.tanggal_awal','kegiatan.tanggal_akhir', 'tipe_kegiatan.nama_tipe_kegiatan','kegiatan.lokasi')
         ->first();
           $penelitis=peserta_kegiatan::with(['peneliti'=>function($k){
             $k->with(['peneliti_psb'=>function($q){

@@ -25,7 +25,8 @@
 					<table class="table table-striped">
 						<br>
 						@if($status=="available")
-							<a class="btn-top" style="margin-right: 15px;" href="{{url('/formDana/'.$id_kegiatan)}}" class="btn btn-primary btn-success pull-right" > <span class="glyphicon glyphicon-plus"></span> Tambah Pengajuan</a>
+							<a class="btn-top" style="margin-right: 15px;" href="{{url('/formDana/'.$id_kegiatan)}}" class="btn btn-primary"> <span class="glyphicon glyphicon-plus"></span> Tambah Pengajuan</a>
+							<h4 class="pull-right" style="color: #448aff"><b>Dana : Rp {{number_format($kegiatan_tp->kegiatan->saldo)}}</b></h4>
 						@else
 							<button class="btn btn-primary" disabled> <span class="glyphicon glyphicon-plus"></span> Tambah Pengajuan</button>
 						@endif
@@ -49,8 +50,8 @@
 								<td> <h4>{{$trans_proyek->transaksi->tanggal}} </h4></td>
 								<td style="text-align: center"><h4>{{$trans_proyek->jumlah}}</h4></td>
 								<td style="text-align: center"><h4>{{$trans_proyek->unit}}</h4></td>
-								<td style="text-align: center"><h4>{{$trans_proyek->perkiraan_biaya}}</h4></td>
-								<td><h4>{{$trans_proyek->transaksi->nominal}}</h4></td>
+								<td style="text-align: center"><h4>Rp {{number_format($trans_proyek->perkiraan_biaya)}}</h4></td>
+								<td><h4>Rp {{number_format($trans_proyek->transaksi->nominal)}}</h4></td>
 								<td><h4>{{$trans_proyek->keterangan}}</h4></td>
 								@if($trans_proyek->transaksi->status == 3)
 									<td><h4><span class="label label-warning">Menunggu</span></h4></td>
@@ -105,7 +106,7 @@
 				<a class="btn btn-primary" style="margin-right: 15px;" href="{{url('/formDana/'.$id_kegiatan)}}" class="btn btn-primary btn-success pull-right" > <h4><span class="glyphicon glyphicon-plus"></span> Tambah Pengajuan</h4></a>
 			@else
 				{{-- <button class="btn btn-primary" disabled> <h4><span class="glyphicon glyphicon-plus"></span> Tambah Pengajuan</h4></button> --}}
-				<div class="alert alert-danger" role="alert">Waktu kegiatan telah berakhir</div>
+				<h4><div class="alert alert-danger" role="alert">Waktu kegiatan telah berakhir</div></h4>
 			@endif
 		</div>
 		<div class="visible-xs">
@@ -139,8 +140,8 @@
 					<input type="" name="countrow" hidden>
 					<div class="row" style="margin-left: -15px">
 						<div class="col-md-6 col-xs-6 form-group">
-							<label for="exampleInputEmail1">Jumlah Barang</label>
-							<input type="text" class="form-control" id="jumlahs" name="jumlah" oninput="subtotals2()">
+							<label for="exampleInputEmail1">Jumlah</label>
+							<input type="text" class="form-control" id="jumlahs" name="jumlah" oninput="validasiform()">
 							<span id="alertjumlahs" style="color: red"></span>
 						</div>
 						<div class="col-md-6 col-xs-6">
@@ -150,8 +151,8 @@
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Perkiraan biaya</label>
-						<input type="text" class="form-control" id="nominals" name="nominal" oninput="subtotals2()" required>
-						<span id="alertnominal" style="color: red"></span>
+						<input type="text" class="form-control" id="nominals" name="nominal" oninput="validasiform()">
+						<span id="alertnominals" style="color: red"></span>
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Sub Total</label>
@@ -165,7 +166,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="submit2" class="btn btn-primary">Save changes</button>
+				<button id="simpan" type="submit2" class="btn btn-primary">Simpan</button>
 				</form>
 			</div>
 		</div>
@@ -173,114 +174,40 @@
 </div>
 
 <script type="text/javascript">
-	var t = $('#data_table').DataTable({
-      'paging'      : false,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : false,
-      'info'        : false,
-      'autoWidth'   : false
-    })
 
-	
-  function myCreateFunction() {
-      var table = document.getElementById("data_table");
-      var row = table.insertRow(1);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
-      var cell4 = row.insertCell(3);
-      var cell5 = row.insertCell(4);
-      var cell6 = row.insertCell(5);
-
-  		let count = table.rows.length - 2
-
-      cell1.innerHTML = '<input type="text" class="form-control" id="jumlah'+count+'" name="jumlah'+count+'" oninput="subtotals('+count+')"><span id="alertjumlah'+count+'" style="color: red"></span>';
-      cell2.innerHTML = '<input type="text" class="form-control" id="unit'+count+'" name="unit'+count+'" placeholder="ex : kg, ml, lusin">';
-      cell3.innerHTML = '<input type="text" class="form-control" id="nominal'+count+'" name="nominal" oninput="subtotals('+count+')" required><span id="alertnominal'+count+'" style="color: red"></span>';
-      cell4.innerHTML = '<input type="text" class="form-control" id="subtotal'+count+'" name="subtotal" readonly>';
-      cell5.innerHTML = '<input type="text" class="form-control" id="keterangan'+count+'" name="keterangan" required>';
-      cell6.innerHTML = '<button class="btn btn-danger" onclick="myDeleteFunction(this)">delete</button>';
-
-      console.log(count)
-
-  }
-
-  function myDeleteFunction(self) {
-    // console.log($(self).closest("tr").index())
-      document.getElementById("data_table").deleteRow($(self).closest("tr").index()+1);
-  }
-
-	function subtotals(count){
-		var jumlah = 'jumlah'
-		var alertjumlah = 'alertjumlah'
-		var nominal = 'nominal'
-		var alertnominal = 'alertnominal'
-		var subtotal = 'subtotal'
-		if(count != 0){
-			jumlah = jumlah + count
-			alertjumlah = alertjumlah + count
-			nominal = nominal + count
-			alertnominal = alertnominal +count
-			subtotal = subtotal +count
-		}
-		if(document.getElementById(jumlah).value!="" && document.getElementById(nominal).value!=""){
-			document.getElementById(subtotal).value=document.getElementById(jumlah).value*document.getElementById(nominal).value;
-		}
-		else if(document.getElementById(jumlah).value==""){
-			document.getElementById(subtotal).value=document.getElementById(nominal).value;
-		}
-
-		if(document.getElementById(nominal).value!="" && document.getElementById(nominal).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 || document.getElementById(nominal).value!="" && document.getElementById(nominal).value == ""){
-			document.getElementById(alertnominal).innerHTML = "Isi dengan angka";
-			document.getElementById(subtotal).value="";
-			// document.getElementById("simpanpengajuan").setAttribute("disabled","disabled");
-		}
-		else{
-			document.getElementById(alertnominal).innerHTML = "";
-		}
-
-		if(document.getElementById(jumlah).value!="" && document.getElementById(jumlah).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 ){
-			document.getElementById(alertjumlah).innerHTML = "Isi dengan angka";
-			document.getElementById(subtotal).value="";
-			// document.getElementById("simpanpengajuan").setAttribute("disabled","disabled");
-		}
-		else{
-			document.getElementById(alertjumlah).innerHTML = "";
-		}
-
-		if(document.getElementById(jumlah).value!="" && document.getElementById(jumlah).value == ""){
-			document.getElementById(subtotal).value=document.getElementById(nominal).value;
-		}
-
-	}
-
-	function subtotals2(){
+function validasiform(){
 		if(document.getElementById("jumlahs").value!="" && document.getElementById("nominals").value!=""){
 			document.getElementById("subtotals").value=document.getElementById("jumlahs").value*document.getElementById("nominals").value;
 		}
 		else if(document.getElementById("jumlahs").value==""){
 			document.getElementById("subtotals").value=document.getElementById("nominals").value;
 		}
-
-		if(document.getElementById("nominals").value!="" && document.getElementById("nominals").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 || document.getElementById("nominals").value!="" && document.getElementById("nominals").value == ""){
-			document.getElementById("alertnominals").innerHTML = "Isi dengan angka";
-			document.getElementById("subtotals").value="";
-		}
-		else{
-			document.getElementById("alertnominals").innerHTML = "";
+		else if(document.getElementById("jumlahs").value!="" && document.getElementById("jumlahs").value == ""){
+			document.getElementById("subtotals").value=document.getElementById("nominals").value;
 		}
 
-		if(document.getElementById("jumlas").value!="" && document.getElementById("jumlahs").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 ){
+		if(document.getElementById("jumlahs").value!="" && document.getElementById("jumlahs").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) != -1 ){
 			document.getElementById("alertjumlahs").innerHTML = "Isi dengan angka";
 			document.getElementById("subtotals").value="";
+			document.getElementById("simpan").setAttribute("disabled","disabled");
 		}
 		else{
 			document.getElementById("alertjumlahs").innerHTML = "";
 		}
 
-		if(document.getElementById("jumlahs").value!="" && document.getElementById("jumlahs").value == ""){
-			document.getElementById("subtotals").value=document.getElementById("nominals").value;
+
+		if(document.getElementById("nominals").value!="" && document.getElementById("nominals").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) != -1){
+			document.getElementById("simpan").setAttribute("disabled","disabled");
+			document.getElementById("alertnominals").innerHTML = "Isi dengan angka";
+			document.getElementById("subtotals").value="";
+			
+		}
+		else{
+			document.getElementById("alertnominals").innerHTML = "";
+		}
+
+		if((document.getElementById("jumlahs").value !="" && document.getElementById("jumlahs").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) == -1 ) && (document.getElementById("nominals").value !="" && document.getElementById("nominals").value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) == -1)){
+			document.getElementById("simpan").removeAttribute("disabled","disabled");
 		}
 
 	}

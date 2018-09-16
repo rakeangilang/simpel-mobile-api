@@ -98,7 +98,7 @@
 						<img src="{{asset('img/contract.svg')}}" style="width: 50px;height: 50px">
 					</div>
 					<div style="text-align: center">
-						<h3 style="color: #1c7bd9"><b>Ubah data yang diperlukan untuk  kegiatan {{$tipekegiatan->nama_tipe_kegiatan}} anda</b></h3>
+						<h3 style="color: #1c7bd9"><b>Ubah data yang diperlukan untuk  kegiatan {{strtolower($tipekegiatan->nama_tipe_kegiatan)}}</b></h3>
 					</div>
 				</div>
 			</div>

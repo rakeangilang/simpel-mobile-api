@@ -1,5 +1,5 @@
 @extends('layout.peneliti')
-@section('title', 'Kegiatan Peneliti')
+@section('title', 'Kegiatan')
 @section('breadcrumb', 'Seminar Ilmiah')
 @section('content')
 <div class="container">
@@ -122,7 +122,7 @@
 					<div>
 						@foreach($tipekegiatans as $tipekegiatan)
 								@if($id==$tipekegiatan->id)
-									<h3 style="color: #1c7bd9"><b>Tambah kegiatan {{$tipekegiatan->nama_tipe_kegiatan}} untuk rekam jejak anda</b></h3>
+									<h3 style="color: #1c7bd9"><b>Tambah data kegiatan {{strtolower($tipekegiatan->nama_tipe_kegiatan)}}</b></h3>
 								@endif
 						@endforeach
 					</div>

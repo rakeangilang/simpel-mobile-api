@@ -14,7 +14,9 @@
 // menu
 	
 Route::get('/login', function () {
-	    return view('auth.login');
+		// $gambar = base64_encode(realpath('C:\Users\Asus\Pictures\alifka.png'));
+		// return view('auth.login',['gambar'=>$gambar]);
+		return view('auth.login');
 	});
 
 Auth::routes();
@@ -82,6 +84,11 @@ Route::group(['middleware' => ['auth','revalidate']],function(){
 	
 	//CV
 	Route::get('/getPDF', 'PDFController@getPDF');
-});
 
+
+});
+// Route::get('/gambar', function(){
+// 		$gambar = base64_encode(file_get_contents(realpath('C:\Users\Asus\Pictures\alifka.png')));
+// 		return view('welcome',['gambar'=>$gambar]);
+// 	});
 

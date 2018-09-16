@@ -63,7 +63,7 @@ class PubbukuController extends Controller
 		}
 		else{
 			$penelitinonpsb_terpilih = null;
-			
+
 		}
 		$countnonpsb=0;
 		return view('peneliti.editpubbuku', ['pubbuku'=>$pubbuku,'penelitipsb_terpilih'=>$penelitipsb_terpilih, 'penelitinonpsb_terpilih'=>$penelitinonpsb_terpilih, 'psb'=>$psb, 'nonpsb'=>$nonpsb]);
@@ -306,10 +306,10 @@ class PubbukuController extends Controller
 		    }
 		    $countnonpsb =0;
 
-		    
+
 		    $notification = array('title'=> 'Berhasil!','msg'=>'Publikasi buku berhasil diedit!','alert-type'=>'success');
 		    return redirect('/profil')->with($notification);
-		}   
+		}
 		//ada req psb
 		elseif ($request->psb!=null && $request->nonpsb==null) {
 			//hapus nonpsb
@@ -405,5 +405,5 @@ class PubbukuController extends Controller
 		$notification = array('title'=> 'Berhasil!', 'msg'=>$judulbuku.' berhasil dihapus!','alert-type'=>'success');
 		return redirect('/profil')->with($notification);
 	}
-	
+
 }

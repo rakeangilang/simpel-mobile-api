@@ -76,7 +76,7 @@
 						
 							</table>
 							</div>
-						<button id="submit" type="submit" class="btn btn-success btn-lg pull-right">Simpan</button>
+						<button id="simpan" type="submit" class="btn btn-success btn-lg pull-right">Simpan</button>
 						{{csrf_field()}}
 					</form>
 				</div>
@@ -115,8 +115,6 @@
       cell5.innerHTML =  '<input type="text" class="form-control" id="subtotal'+count+'" name="subtotal[]" readonly><br>';
       cell6.innerHTML = '<button class="btn btn-danger" onclick="myDeleteFunction(this)"><i class="fas fa-trash-alt"></i> Delete</button><br><br><br>';
 
-      console.log(count)
-
   }
 
   function myDeleteFunction(self) {
@@ -144,10 +142,14 @@
 			document.getElementById(subtotal).value=document.getElementById(nominal).value;
 		}
 
+		else if(document.getElementById(jumlah).value!="" && document.getElementById(jumlah).value == ""){
+			document.getElementById(subtotal).value=document.getElementById(nominal).value;
+		}
+
 		if(document.getElementById(nominal).value!="" && document.getElementById(nominal).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 || document.getElementById(nominal).value!="" && document.getElementById(nominal).value == ""){
 			document.getElementById(alertnominal).innerHTML = "Isi dengan angka";
 			document.getElementById(subtotal).value="";
-			// document.getElementById("simpanpengajuan").setAttribute("disabled","disabled");
+			// document.getElementById("simpan").setAttribute("disabled","disabled");
 		}
 		else{
 			document.getElementById(alertnominal).innerHTML = "";
@@ -156,15 +158,18 @@
 		if(document.getElementById(jumlah).value!="" && document.getElementById(jumlah).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) !== -1 ){
 			document.getElementById(alertjumlah).innerHTML = "Isi dengan angka";
 			document.getElementById(subtotal).value="";
-			// document.getElementById("simpanpengajuan").setAttribute("disabled","disabled");
+			// document.getElementById("simpan").setAttribute("disabled","disabled");
 		}
 		else{
 			document.getElementById(alertjumlah).innerHTML = "";
 		}
-
-		if(document.getElementById(jumlah).value!="" && document.getElementById(jumlah).value == ""){
-			document.getElementById(subtotal).value=document.getElementById(nominal).value;
-		}
+		// console.log(count);
+		// for(i=0; i<=count; i++){
+		// 	if((document.getElementById(jumlah).value !="" && document.getElementById(jumlah).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) == -1 ) && (document.getElementById(nominal).value !="" && document.getElementById(nominal).value.search(/[a-z ~ ` ! @ # $ % ^ & * ( ) _ - + = | \ / ' ' " " ; : ? > . < ,]/g) == -1)){
+		// 	document.getElementById("simpan").removeAttribute("disabled","disabled");
+		// 	}
+		// }
+		
 
 	}
 

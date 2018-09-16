@@ -70,7 +70,7 @@
 						<img src="{{asset('img/contract.svg')}}" style="width: 50px;height: 50px">
 					</div>
 					<div>
-						<h3 style="color: #1c7bd9"><b>Tambah Buku Anda yang Telah Terpublikasi</b></h3>
+						<h3 style="color: #1c7bd9"><b>Tambah data buku yang telah terpublikasi</b></h3>
 					</div>
 				</div>
 			</div>

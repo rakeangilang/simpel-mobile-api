@@ -1,7 +1,7 @@
 
 <!-- Site wrapper -->
   <div class="wrapper">
-    <header class="main-header" style="font-size: 18px">
+    <header class="main-header" >
       <!-- Logo -->
        <!-- Logo -->
     <a href="#" class="logo">
@@ -23,7 +23,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu" style="margin-top: 5px">
+          <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               @if($kegiatanss!=null)
                 <i class="far fa-envelope"></i>
@@ -71,7 +71,7 @@
 
 
           <!-- User Account: style can be found in dropdown.less -->
-          <li class="dropdown user user-menu" style="margin-top: 8px">
+          <li class="dropdown user user-menu" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="{{asset('img/man.svg')}}" class="user-image" alt="User Image">
               <span class="hidden-xs">{{auth::user()->pegawai->nama}}</span>

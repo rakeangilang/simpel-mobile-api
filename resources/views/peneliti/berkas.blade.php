@@ -1,5 +1,5 @@
 @extends('layout.peneliti')
-@section('title', 'Seminar Ilmiah')
+@section('title', 'Berkas '.$tipekegiatan->nama_tipe_kegiatan)
 
 @section('styles')
 <link rel="stylesheet" type="text/css" href="{{URL::asset('css/bootstrap-select.min.css')}}">
@@ -138,7 +138,7 @@
 							<img src="{{asset('img/contract.svg')}}" style="width: 50px;height: 50px">
 						</div>
 						<div>
-							<h3 style="color: #1c7bd9"><b>Arsip berkas yang diperlukan untuk {{$tipekegiatan->nama_tipe_kegiatan}} anda</b></h3>
+							<h3 style="color: #1c7bd9"><b>Arsip berkas yang diperlukan untuk kegiatan {{strtolower($tipekegiatan->nama_tipe_kegiatan)}}</b></h3>
 						</div>
 					</div>
 				</div>
