@@ -95,4 +95,17 @@ class ApiProfilController extends Controller
       ]);
     }
 
+    public function editpassword(Request $request, User $user, $id_u){
+      $id_user = $user->find($id_u)->id;
+      $passbaru = $request['passbaru'];
+      user::where('id',$id_user)->update([
+        'password'=> bcrypt($passbaru)
+      ]);
+      $notification = array('tittle'=> 'Berhasil!','msg'=>'Password anda telah diganti.','alert-type'=>'success');
+      return response()->json([
+        'success'=>true,
+        'message'=>"Password berhasil diganti"
+      ]);
+    }
+
 }
