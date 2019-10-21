@@ -54,3 +54,4 @@ Route::get('/vieweditkegiatan/{id}/{id_k}', 'ApiKegiatanController@vieweditkegia
 
 // Profil
 Route::get('/profil/{id}', 'ApiProfilController@getProfil')->middleware('auth:api');
+Route::put('/editusername/{id}','ApiProfilController@editusername');

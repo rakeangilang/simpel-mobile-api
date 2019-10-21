@@ -80,4 +80,19 @@ class ApiProfilController extends Controller
       'publikasibukuu'=> $publikasibukuu
     ]);
   }
+
+  public function editusername(Request $request, User $user, $id_u)
+    {
+      $id_user = $user->find($id_u)->id;
+      $username = $request['username'];
+      user::where('id',$id_user)->update([
+        'username'=> $username
+      ]);
+      $notification = array('tittle'=> 'Berhasil!','msg'=>'Username anda telah diganti.','alert-type'=>'success');
+      return response()->json([
+        'success'=>true,
+        'message'=>"Username berhasil diubah"
+      ]);
+    }
+
 }
