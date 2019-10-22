@@ -56,3 +56,6 @@ Route::get('/vieweditkegiatan/{id}/{id_k}', 'ApiKegiatanController@vieweditkegia
 Route::get('/profil/{id}', 'ApiProfilController@getProfil')->middleware('auth:api');
 Route::put('/editusername/{id_u}','ApiProfilController@editusername');
 Route::put('/editpassword/{id_u}','ProfilController@editpassword');
+
+// PDF
+Route::get('/getPDF/{id}', 'ApiPDFController@getPDF');
