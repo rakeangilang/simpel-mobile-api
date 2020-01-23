@@ -37,6 +37,7 @@ Route::put('/editkegiatan/{id_u}/{id_k}', 'ApiKegiatanController@editKegiatan')-
 Route::get('/getberkas/{id}/{id_k}', 'ApiBerkasController@viewberkas')->middleware('auth:api');
 Route::get('/penulispsb/{id}', 'ApiBerkasController@findpsb')->middleware('auth:api');
 Route::post('/tambahnonpsb', 'ApiBerkasController@TambahNonPSB')->middleware('auth:api');
+Route::post('/tambahBerkas/{id_u}/{id_k}', 'ApiBerkasController@tambahBerkas');
 
 // Pub jurnal
 Route::post('/tambahpubjurnal/{id}', 'ApiPubJurnalController@tambahPubjurnal')->middleware('auth:api');

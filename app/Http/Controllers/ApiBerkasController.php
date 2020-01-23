@@ -137,4 +137,100 @@ class ApiBerkasController extends Controller
           ]);
     }
 
+    public function tambahBerkas(Request $request, User $user, $id_u, $id_k)
+  {
+    $kegiatan = kegiatan::find($id_k);
+    $id_kegiatan = $kegiatan->id;
+    $tipekegiatan = $kegiatan->tipe_kegiatan;
+    $tipe_berkas = $tipekegiatan->tipe_berkas;
+    $id_pegawai = $user->find($id_u)->id_pegawai;
+    $peneliti = peneliti_psb::where('id_pegawai',$id_pegawai)->first();
+    $id_peneliti = $peneliti->id_peneliti;
+    $judul = $request['judul'];
+    berkas::create([
+      'id_kegiatan'=>$id_kegiatan,
+      'judul'=>$judul
+    ]);
+    foreach ($tipe_berkas as $berkas_kegiatan) {
+      $reqberkas = $request->file('berkas'.$berkas_kegiatan->id);
+      if(isset($reqberkas)){
+        $path = $reqberkas->getClientOriginalName();
+        $reqberkas->move($tipekegiatan->nama_tipe_kegiatan.'/'.$id_kegiatan.'/'.$berkas_kegiatan->nama_tipe_berkas, $reqberkas->getClientOriginalName());
+        berkas::create([
+          'nama_berkas'=>$path,
+          'id_tipe_berkas'=>$berkas_kegiatan->id,
+          'id_kegiatan'=>$id_kegiatan,
+          'judul'=> $judul
+        ]);
+      }
+    }
+    //ada req psb dan nonpsb
+      if($request->psb!=null && $request->nonpsb!=null){
+        foreach ($request->psb as $index => $psb) {
+          $psb = (int)$psb;
+          $peneliti = peneliti_psb::where('id_peneliti',$psb)->first();
+          $id_peneliti = $peneliti->id_peneliti;
+          peserta_kegiatan::create([
+            'id_peneliti' => $id_peneliti,
+            'id_kegiatan'=> $kegiatan->id,
+            'status_konfirm'=> 'menunggu'
+          ]);
+        }
+
+        foreach ($request->nonpsb as $index => $nonpsb) {
+          $nonpsb = (int)$nonpsb;
+          peserta_kegiatan::create([
+            'id_peneliti' => $nonpsb,
+            'id_kegiatan'=> $kegiatan->id
+          ]);
+        }
+        $notification = array('title'=> 'Berhasil!','msg'=>'Berkas berhasil ditambahkan!','alert-type'=>'success');
+        return response()->json([
+          'success'=>true,
+          'message'=>"Berkas berhasil ditambahkan!"
+        ], 201);
+    }
+    //ada req nonpsb
+    elseif ($request->psb==null && $request->nonpsb!=null) {
+      foreach ($request->nonpsb as $index => $nonpsb) {
+          $nonpsb = (int)$nonpsb;
+          peserta_kegiatan::create([
+            'id_peneliti' => $nonpsb,
+            'id_kegiatan'=> $kegiatan->id
+          ]);
+        }
+        $notification = array('title'=> 'Berhasil!','msg'=>'Berkas berhasil ditambahkan!','alert-type'=>'success');
+        return response()->json([
+          'success'=>true,
+          'message'=>"Berkas berhasil ditambahkan!"
+        ], 201);
+    }
+    //ada req psb
+    elseif ($request->psb!=null && $request->nonpsb==null) {
+      foreach ($request->psb as $index => $psb) {
+          $psb = (int)$psb;
+          $peneliti = peneliti_psb::where('id_peneliti',$psb)->first();
+          $id_peneliti = $peneliti->id_peneliti;
+          peserta_kegiatan::create([
+            'id_peneliti' => $id_peneliti,
+            'id_kegiatan'=> $kegiatan->id,
+            'status_konfirm'=> 'menunggu'
+          ]);
+        }
+        $notification = array('title'=> 'Berhasil!','msg'=>'Berkas berhasil ditambahkan!','alert-type'=>'success');
+        return response()->json([
+          'success'=>true,
+          'message'=>"Berkas berhasil ditambahkan!"
+        ], 201);
+    }
+    else{
+      $notification = array('title'=> 'Berhasil!','msg'=>'Berkas berhasil ditambahkan!','alert-type'=>'success');
+        return response()->json([
+          'success'=>true,
+          'message'=>"Berkas berhasil ditambahkan!"
+        ], 201);
+    }
+
+  }
+
 }
